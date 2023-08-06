@@ -1,0 +1,32 @@
+{
+  "name": "seas",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "source": "src/index.ts",
+  "types": "dist/types.d.ts",
+  "bin": {
+    "seas": "./bin/seas.js"
+  },
+  "engines": {
+    "node": "^14.18.0 || >=16.0.0"
+  },
+  "scripts": {
+    "build": "rollup --config rollup.config.ts --configPlugin typescript"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@rollup/plugin-alias": "^4.0.4",
+    "@rollup/plugin-commonjs": "^25.0.3",
+    "@rollup/plugin-dynamic-import-vars": "^2.0.4",
+    "@rollup/plugin-json": "^6.0.0",
+    "@rollup/plugin-node-resolve": "15.1.0",
+    "@rollup/plugin-typescript": "^11.1.2",
+    "@types/node": "^20.4.8",
+    "dotenv": "^16.3.1",
+    "ws": "^8.13.0"
+  }
+}

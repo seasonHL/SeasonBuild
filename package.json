@@ -1,0 +1,21 @@
+{
+  "name": "season-build",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "frontend",
+    "dev-server",
+    "build-tool"
+  ],
+  "author": "hanling",
+  "license": "ISC",
+  "devDependencies": {
+    "lint-staged": "^13.2.3",
+    "rollup": "^3.27.1",
+    "typescript": "^5.1.6"
+  }
+}
