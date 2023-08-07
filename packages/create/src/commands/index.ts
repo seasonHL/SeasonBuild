@@ -24,6 +24,8 @@ export default async function create() {
   const root = path.join(cwd, targetDir);
   overwriteHandle(overwrite, root);
 
+  console.log(`\nScaffolding project in ${root}...`);
+
   const templateDir = path.resolve(
     __filename,
     "../../",
@@ -40,6 +42,14 @@ export default async function create() {
     JSON.stringify({ ...pkg, name: projectName }, null, 2)
   );
 
+  const cdProjectDir = path.relative(cwd, root);
+  console.log(`\nDone. Now run:\n`);
+  if (root !== cwd) {
+    console.log(
+      `  cd ${cdProjectDir.includes(" ") ? `"${cdProjectDir}"` : cdProjectDir}`
+    );
+  }
+  console.log();
   // const res = spawn.sync(
   //   "git",
   //   [
