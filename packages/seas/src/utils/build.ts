@@ -1,9 +1,12 @@
 import esbuild from "esbuild";
 import fs from "fs";
 
-export async function pack() {
-  esbuild.build({
-    entryPoints: ["src/index.js"],
+const regex = /<script.*?src="(.*?)".*?><\/script>/g;
+
+export async function pack(html: string) {
+  const entries = html.match(regex)?.map((v) => v.replace(regex, "$1"));
+  await esbuild.build({
+    entryPoints: [...Array.from(entries ?? [])],
     bundle: true,
     outfile: "dist/src/bundle.js",
     footer: {
@@ -17,21 +20,30 @@ export async function pack() {
   });
 }
 
-export async function writeHTML() {
+export function readHTML() {
   const src = "index.html";
-  const dest = "dist/index.html";
+  return fs.readFileSync(src, "utf8") as unknown as string;
+}
 
-  const html = fs.readFileSync(src, "utf8") as unknown as string;
-  const modContent = html.replace("src/index", `src/bundle`);
-  fs.writeFile(dest, modContent, (err) => {
-    if (err) console.error(err);
+export async function writeHTML(html: string) {
+  return new Promise<void>((resolve) => {
+    const dest = "dist/index.html";
+    const modContent = html.replace(
+      regex,
+      `<script src="src/bundle.js"></script>`
+    );
+    fs.writeFile(dest, modContent, (err) => {
+      if (err) console.error(err);
+      resolve();
+    });
   });
 }
 
 export async function build() {
   try {
-    await pack();
-    writeHTML();
+    const html = readHTML();
+    await pack(html);
+    await writeHTML(html);
   } catch (error) {
     console.error(error);
     process.exit(1);

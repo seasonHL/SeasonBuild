@@ -1,7 +1,7 @@
 import { Server } from "http";
 import { WebSocketServer } from "ws";
 import chokidar from "chokidar";
-import { pack, writeHTML } from "./build";
+import { pack, readHTML, writeHTML } from "./build";
 
 export function watchServer(server: Server) {
   const wss = new WebSocketServer({ server });
@@ -13,8 +13,9 @@ export function watchServer(server: Server) {
     });
     // watcher.on("all", (eventName, path) => {});
     watcher.on("change", async (path) => {
-      await pack();
-      if (path.includes("html")) writeHTML();
+      const html = readHTML();
+      await pack(html);
+      if (path.includes("html")) writeHTML(html);
       socket.send("reload");
     });
   });
