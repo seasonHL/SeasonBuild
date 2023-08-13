@@ -20,8 +20,8 @@
     "@types/prompts": "^2.4.4",
     "cross-spawn": "^7.0.3",
     "dotenv": "^16.3.1",
-    "kolorist": "^1.8.0",
     "minimist": "^1.2.8",
+    "picocolors": "^1.0.0",
     "prompts": "^2.4.2"
   }
 }

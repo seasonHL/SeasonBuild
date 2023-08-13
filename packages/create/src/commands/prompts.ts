@@ -1,19 +1,18 @@
 import fs from "node:fs";
 import prompts from "prompts";
 import { formatTargetDir, isEmpty } from "../utils";
-import { reset, cyan, green, gray, blue, yellow } from "kolorist";
+import pc from "picocolors";
 import { PromptsAnswers, PromptsResult } from "../types";
 import { argv } from "./argv";
 
+const { reset, cyan, green, gray, blue, yellow } = pc;
 const defaultTargetDir = process.env.TARGET_DIR || "seas-project";
 
 export async function getPrmtsRes(): Promise<PromptsResult> {
   // 命令行第一个参数，替换反斜杠 / 为空字符串
   const argTargetDir = formatTargetDir(argv._[0]);
   let targetDir = argTargetDir || defaultTargetDir;
-  let result: PromptsAnswers;
-
-  result = await prompts(
+  const result: PromptsAnswers = await prompts(
     [
       {
         type: argTargetDir ? null : "text",
