@@ -13,7 +13,8 @@
     "node": "^14.18.0 || >=16.0.0"
   },
   "scripts": {
-    "build": "rollup --config rollup.config.ts --configPlugin typescript"
+    "build": "rollup --config rollup.config.ts --configPlugin typescript",
+    "lint": "eslint --cache --ext .ts src/**"
   },
   "keywords": [],
   "author": "",
