@@ -3,7 +3,6 @@ import { defineConfig } from "rollup";
 import { fileURLToPath } from "node:url";
 import json from "@rollup/plugin-json";
 import ts from "@rollup/plugin-typescript";
-import replace from "@rollup/plugin-replace";
 import commonjs from "@rollup/plugin-commonjs";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 
@@ -17,13 +16,6 @@ const plugins = [
   nodeResolve(),
   commonjs(),
   json(),
-  replace({
-    preventAssignment: true,
-    values: {
-      __dirname: 'fileURLToPath(new URL(".", import.meta.url))',
-      __filename: "fileURLToPath(import.meta.url)",
-    },
-  }),
 ];
 
 const serverConfig = defineConfig({
