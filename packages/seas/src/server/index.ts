@@ -1,7 +1,9 @@
 import http from "http";
 import fs from "fs";
 import path from "path";
+import pc from "picocolors";
 import { watchServer } from "../utils/watch";
+import { VERSION } from "./constants";
 
 export function serverStart() {
   const server = http.createServer((req, res) => {
@@ -42,6 +44,16 @@ export function serverStart() {
 
   const PORT = 8080;
   server.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}/`);
+    console.log(
+      `${pc.green(
+        `${pc.bold("SEASON_BUILD")} v${VERSION}`
+      )} ready in ${pc.reset(pc.bold(~~performance.now()))} ms`
+    );
+
+    console.log(
+      `${pc.reset(pc.bold("Local: "))} ${pc.blue(
+        `http://localhost:${pc.cyan(pc.bold(PORT))}/`
+      )}`
+    );
   });
 }
