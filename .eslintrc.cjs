@@ -31,6 +31,5 @@ module.exports = {
     ],
     "rules": {
         "no-mixed-spaces-and-tabs": ["error"],
-        "quotes": ["error", "double"]
     }
 }
