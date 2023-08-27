@@ -14,6 +14,7 @@ export default async function create() {
 
   try {
     result = await getPrmtsRes();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (cancelled: any) {
     console.log(cancelled.message);
     return;
@@ -50,12 +51,4 @@ export default async function create() {
     );
   }
   console.log();
-  // const res = spawn.sync(
-  //   "git",
-  //   [
-  //     "clone",
-  //     "https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts",
-  //   ],
-  //   { stdio: "inherit" }
-  // );
 }
