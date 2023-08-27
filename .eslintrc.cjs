@@ -9,7 +9,6 @@ module.exports = {
         'plugin:react-hooks/recommended',
         "plugin:@typescript-eslint/recommended"
     ],
-    "plugins": ['react-refresh'],
     "overrides": [
         {
             "env": {
@@ -29,7 +28,8 @@ module.exports = {
         "sourceType": "module"
     },
     "plugins": [
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "react-refresh"
     ],
     "rules": {
         "no-mixed-spaces-and-tabs": ["error"],
