@@ -2,10 +2,18 @@
   "name": "seas",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "type": "module",
   "source": "src/index.ts",
   "types": "dist/types.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/main.js",
+      "require": "./dist/main.cjs"
+    },
+    "./client": {
+      "import": "./dist/client/main.js"
+    }
+  },
   "bin": {
     "seas": "./bin/seas.js"
   },
