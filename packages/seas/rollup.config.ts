@@ -18,6 +18,20 @@ const plugins = [
   json(),
 ];
 
+const clientConfig = defineConfig({
+  input: path.resolve(__dirname, "./src/client/client.ts"),
+  output: [
+    {
+      file: "./dist/client/main.cjs",
+      format: "cjs",
+    },
+    {
+      file: "./dist/client/main.js",
+      format: "es",
+    },
+  ],
+  plugins,
+});
 const serverConfig = defineConfig({
   input: path.resolve(__dirname, "./src/server/index.ts"),
   output: [
@@ -48,4 +62,4 @@ const mainConfig = defineConfig({
   external: ["esbuild"],
 });
 
-export default defineConfig([mainConfig, serverConfig]);
+export default defineConfig([mainConfig, serverConfig, clientConfig]);
