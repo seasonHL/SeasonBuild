@@ -7,11 +7,11 @@
   "types": "dist/types.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/main.js",
-      "require": "./dist/main.cjs"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     },
     "./client": {
-      "import": "./dist/client/main.js"
+      "import": "./dist/client.js"
     }
   },
   "bin": {

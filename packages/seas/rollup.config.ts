@@ -12,54 +12,64 @@ const plugins = [
   ts({
     tsconfig: "tsconfig.json",
     allowSyntheticDefaultImports: true,
+    declarationDir: "dist",
+    declaration: true,
   }),
   nodeResolve(),
   commonjs(),
   json(),
 ];
 
-const clientConfig = defineConfig({
-  input: path.resolve(__dirname, "./src/client/client.ts"),
-  output: [
-    {
-      file: "./dist/client/main.cjs",
-      format: "cjs",
-    },
-    {
-      file: "./dist/client/main.js",
-      format: "es",
-    },
-  ],
-  plugins,
-});
-const serverConfig = defineConfig({
-  input: path.resolve(__dirname, "./src/server/index.ts"),
-  output: [
-    {
-      file: "./dist/server/main.cjs",
-      format: "cjs",
-    },
-    {
-      file: "./dist/server/main.js",
-      format: "es",
-    },
-  ],
-  plugins,
-});
-const mainConfig = defineConfig({
-  input: path.resolve(__dirname, "./src/index.ts"),
-  output: [
-    {
-      file: "./dist/main.cjs",
-      format: "cjs",
-    },
-    {
-      file: "./dist/main.js",
-      format: "es",
-    },
-  ],
-  plugins,
+const sharedOptions = defineConfig({
+  treeshake: {
+    // 所有外部模块都被视为无副作用，可以被 Tree Shaking 移除
+    moduleSideEffects: "no-external",
+    // 不希望属性读取（对象的属性访问）被视为有副作用，也可以被 Tree Shaking 移除
+    propertyReadSideEffects: false,
+  },
+  output: {
+    dir: path.resolve(__dirname, "dist"),
+    entryFileNames: `[name].js`,
+    chunkFileNames: "chunks/dep-[hash].js",
+    exports: "named",
+    format: "esm",
+    freeze: false,
+  },
   external: ["esbuild"],
+  plugins,
 });
 
-export default defineConfig([mainConfig, serverConfig, clientConfig]);
+function createConfig() {
+  return defineConfig({
+    ...sharedOptions,
+    input: {
+      index: path.resolve(__dirname, "src/index.ts"),
+      server: path.resolve(__dirname, "src/server/index.ts"),
+      client: path.resolve(__dirname, "src/client/client.ts"),
+    },
+    output: {
+      ...sharedOptions.output,
+    },
+  });
+}
+
+function createCjsConfig() {
+  return defineConfig({
+    ...sharedOptions,
+    input: {
+      index: path.resolve(__dirname, "src/index.ts"),
+      server: path.resolve(__dirname, "src/server/index.ts"),
+      client: path.resolve(__dirname, "src/client/client.ts"),
+    },
+    output: {
+      dir: path.resolve(__dirname, "dist"),
+      entryFileNames: `[name].cjs`,
+      chunkFileNames: "chunks/dep-[hash].cjs",
+      exports: "named",
+      format: "cjs",
+      freeze: false,
+    },
+  });
+}
+
+export default defineConfig([createConfig(), createCjsConfig()]);

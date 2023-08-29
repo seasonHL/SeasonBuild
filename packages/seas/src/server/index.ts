@@ -1,7 +1,7 @@
-import http from "http";
-import type { RequestListener, Server } from "http";
-import fs from "fs";
-import path from "path";
+import http from "node:http";
+import type { RequestListener, Server } from "node:http";
+import fs from "node:fs";
+import path from "node:path";
 import { watchServer } from "../utils/watch";
 import logger, {
   notice,

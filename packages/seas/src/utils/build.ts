@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import fs from "fs";
+import fs from "node:fs";
 import esbuild from "esbuild";
 import logger from "./logger";
 import type { BuildOptions } from "esbuild";
