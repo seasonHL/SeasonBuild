@@ -1,4 +1,5 @@
-import http, { RequestListener, Server } from "http";
+import http from "http";
+import type { RequestListener, Server } from "http";
 import fs from "fs";
 import path from "path";
 import { watchServer } from "../utils/watch";

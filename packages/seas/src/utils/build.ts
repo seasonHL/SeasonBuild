@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import fs from "fs";
-import esbuild, { BuildOptions } from "esbuild";
+import esbuild from "esbuild";
 import logger from "./logger";
+import type { BuildOptions } from "esbuild";
 
 const regex = /<script.*?src="(.*?)".*?><\/script>/g;
 /**
