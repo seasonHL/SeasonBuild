@@ -1,14 +1,30 @@
-import http, { RequestListener } from "http";
+import http, { RequestListener, Server } from "http";
 import fs from "fs";
 import path from "path";
 import { watchServer } from "../utils/watch";
-import { printServerUrls } from "@/utils/logger";
+import logger, {
+  notice,
+  printNotice,
+  printServerUrls,
+  printStart,
+} from "@/utils/logger";
 import readline from "readline";
+import openBrowser from "@/utils/openBrowser";
 
-const contentTypes = {
-  ".html": "text/html",
-  ".js": "text/javascript",
-  ".css": "text/css",
+export interface ServerOptions {
+  port?: number;
+}
+
+export interface DevServer {
+  httpServer?: Server;
+  port?: number;
+  listen?: () => void;
+  close?: () => Promise<void>;
+  restartServer?: () => void;
+}
+
+const initConfig: ServerOptions = {
+  port: 8080,
 };
 
 const reqUrlHandler = (url: string) => {
@@ -26,9 +42,12 @@ const requestListener: RequestListener = (req, res) => {
   // 根据请求的URL，读取对应的文件
   const { url } = req;
   const filePath = reqUrlHandler(url ?? "");
-
   const extname = path.extname(filePath);
-
+  const contentTypes = {
+    ".html": "text/html",
+    ".js": "text/javascript",
+    ".css": "text/css",
+  };
   fs.readFile(filePath, (err, content) => {
     if (err) {
       if (err.code === "ENOENT") {
@@ -47,34 +66,72 @@ const requestListener: RequestListener = (req, res) => {
   });
 };
 
-export function createServer() {
-  const server = http.createServer(requestListener);
+export function createServer(config: ServerOptions): DevServer {
+  const { port } = config;
+  const httpServer = http.createServer(requestListener);
+  const protocol = "http";
+  const hostname = "localhost";
+  const url = `${protocol}://${hostname}:${port}/`;
+  let isRestart = false;
+
+  const listeningListener = () => {
+    if (isRestart) {
+      logger.logs("server restarted.");
+      return;
+    } else {
+      printStart();
+      printServerUrls(url);
+      console.log(notice["h"]);
+      !isRestart && (isRestart = true);
+    }
+  };
+
+  const listen = () => {
+    httpServer.listen(port, listeningListener);
+  };
+
+  const close = () => {
+    return new Promise<void>((resolve) => {
+      httpServer.close(() => resolve());
+    });
+  };
+
+  const restartServer = () => {
+    close().then(() => listen());
+  };
   return {
-    server,
-    listen(port: number) {
-      server.listen(port, () => {
-        printServerUrls(`http://localhost:${port}/`);
-      });
-    },
+    httpServer,
+    port,
+    listen,
+    close,
+    restartServer,
   };
 }
 
-export function serverStart() {
-  const server = createServer();
-
-  watchServer(server.server);
-
-  const PORT = 8080;
-  server.listen(PORT);
+const keypressListener = (server: DevServer) => {
+  const { restartServer, port } = server;
+  const url = `http://localhost:${port}/`;
   readline.emitKeypressEvents(process.stdin);
   process.stdin.setRawMode(true);
   process.stdin.on("keypress", (str, key) => {
     if (key.ctrl && key.name === "c") process.exit();
     const actions = {
+      h: () => printNotice(),
+      r: () => restartServer?.(),
+      u: () => printServerUrls(url),
+      o: () => openBrowser(url),
+      c: () => console.clear(),
       q: () => process.exit(),
     };
 
     const action = actions[str as keyof typeof actions];
     action?.();
   });
+};
+
+export function serverStart() {
+  const server = createServer(initConfig);
+  watchServer(server);
+  server.listen?.();
+  keypressListener(server);
 }
