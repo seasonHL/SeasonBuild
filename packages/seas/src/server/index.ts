@@ -11,10 +11,7 @@ import logger, {
 } from "@/utils/logger";
 import readline from "readline";
 import openBrowser from "@/utils/openBrowser";
-
-export interface ServerOptions {
-  port?: number;
-}
+import { initConfig, type ServerOptions } from "@/utils/defineConfig";
 
 export interface DevServer {
   httpServer?: Server;
@@ -23,10 +20,6 @@ export interface DevServer {
   close?: () => Promise<void>;
   restartServer?: () => void;
 }
-
-const initConfig: ServerOptions = {
-  port: 8080,
-};
 
 const reqUrlHandler = (url: string) => {
   const basePath = "./dist";
@@ -67,8 +60,8 @@ const requestListener: RequestListener = (req, res) => {
   });
 };
 
-export function createServer(config: ServerOptions): DevServer {
-  const { port } = config;
+export function createServer(config: ServerOptions = {}): DevServer {
+  const { port = 8888, open } = config;
   const httpServer = http.createServer(requestListener);
   const protocol = "http";
   const hostname = "localhost";
@@ -83,7 +76,8 @@ export function createServer(config: ServerOptions): DevServer {
       printStart();
       printServerUrls(url);
       console.log(notice["h"]);
-      !isRestart && (isRestart = true);
+      open && openBrowser(url);
+      isRestart = true;
     }
   };
 
@@ -131,8 +125,9 @@ const keypressListener = (server: DevServer) => {
 };
 
 export function serverStart() {
-  const server = createServer(initConfig);
-  watchServer(server);
-  server.listen?.();
-  keypressListener(server);
+  const { server } = initConfig;
+  const devServer = createServer(server);
+  watchServer(devServer);
+  devServer.listen?.();
+  keypressListener(devServer);
 }
