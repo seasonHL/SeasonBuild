@@ -1,0 +1,1 @@
+export { loadEnvVar } from "./env";
