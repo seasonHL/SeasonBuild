@@ -2,7 +2,7 @@ import http from "node:http";
 import type { RequestListener, Server } from "node:http";
 import fs from "node:fs";
 import path from "node:path";
-import { watchServer } from "../utils/watch";
+import { watchServer } from "./watch";
 import logger, {
   notice,
   printNotice,

@@ -1,6 +1,6 @@
 import { WebSocketServer } from "ws";
 import chokidar from "chokidar";
-import { buildJS, copyHTML } from "./build";
+import { buildJS, copyHTML } from "../utils/build";
 import type { DevServer } from "@/server";
 
 export function watchServer(server: DevServer) {
