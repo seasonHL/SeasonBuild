@@ -43,8 +43,7 @@ function createConfig() {
   return defineConfig({
     ...sharedOptions,
     input: {
-      index: path.resolve(__dirname, "src/index.ts"),
-      server: path.resolve(__dirname, "src/server/index.ts"),
+      cli: path.resolve(__dirname, "src/server/cli.ts"),
       client: path.resolve(__dirname, "src/client/client.ts"),
     },
     output: {
@@ -57,8 +56,7 @@ function createCjsConfig() {
   return defineConfig({
     ...sharedOptions,
     input: {
-      index: path.resolve(__dirname, "src/index.ts"),
-      server: path.resolve(__dirname, "src/server/index.ts"),
+      cli: path.resolve(__dirname, "src/server/cli.ts"),
       client: path.resolve(__dirname, "src/client/client.ts"),
     },
     output: {

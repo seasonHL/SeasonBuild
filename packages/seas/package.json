@@ -3,13 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
-  "source": "src/index.ts",
   "types": "dist/types.d.ts",
   "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    },
     "./client": {
       "import": "./dist/client.js"
     }
@@ -21,7 +16,7 @@
     "node": "^14.18.0 || >=16.0.0"
   },
   "scripts": {
-    "dev": "pnpm run build -w",
+    "dev": "rimraf dist && pnpm run build -w",
     "build": "rollup --config rollup.config.ts --configPlugin typescript",
     "lint": "eslint --cache --ext .ts src/**"
   },
