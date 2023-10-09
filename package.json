@@ -5,6 +5,10 @@
   "type": "module",
   "scripts": {
     "build": "pnpm -r --filter=\"./packages/*\" run build",
+     "change": "changeset add",
+    "change:version": "changeset version",
+    "release": "pnpm build && pnpm release:only",
+    "release:only": "changeset publish",
     "prepare": "husky install"
   },
   "keywords": [
@@ -15,6 +19,7 @@
   "author": "hanling",
   "license": "ISC",
   "devDependencies": {
+    "@changesets/cli": "^2.26.2",
     "@typescript-eslint/eslint-plugin": "^6.3.0",
     "@typescript-eslint/parser": "^6.3.0",
     "eslint": "^8.47.0",
