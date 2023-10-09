@@ -29,5 +29,8 @@
   },
   "lint-staged": {
     "*.ts": "eslint --cache --fix"
+  },
+  "dependencies": {
+    "eslint-plugin-react": "^7.33.2"
   }
 }
