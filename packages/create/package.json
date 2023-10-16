@@ -1,12 +1,17 @@
 {
   "name": "create-seas",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "",
   "main": "./dist/index.js",
   "type": "module",
   "bin": {
     "create-seas": "index.js"
   },
+  "files": [
+    "index.js",
+    "templates",
+    "dist"
+  ],
   "scripts": {
     "build": "rollup --config rollup.config.ts --configPlugin typescript"
   },
@@ -17,7 +22,9 @@
     "@rollup/plugin-typescript": "^11.1.2",
     "@types/cross-spawn": "^6.0.2",
     "@types/minimist": "^1.2.2",
-    "@types/prompts": "^2.4.4",
+    "@types/prompts": "^2.4.4"
+  },
+  "dependencies": {
     "cross-spawn": "^7.0.3",
     "dotenv": "^16.3.1",
     "minimist": "^1.2.8",
