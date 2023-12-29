@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "pnpm -r --filter=\"./packages/*\" run build",
-     "change": "changeset add",
+    "change": "changeset add",
     "change:version": "changeset version",
     "release": "pnpm build && pnpm release:only",
     "release:only": "changeset publish",
